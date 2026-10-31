@@ -6,4 +6,4 @@ services:
       - "8000:8000"
     environment:
       - SITE_ID=1
-      - USE_PLACEHOLDER_SOCIAL_APPS=1
+      - USE_PLACEHOLDER_SOCIAL_APPS=1 
