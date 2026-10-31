@@ -1,0 +1,827 @@
+{% load socialaccount %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>PSUSphere Login</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef4ff 0%,
+                    #f8f9fc 50%,
+                    #eaf1ff 100%
+                );
+
+            padding: 30px 15px;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 650px;
+
+            display: flex;
+
+            background: #ffffff;
+            border-radius: 24px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        /* =========================
+           LEFT SIDE
+        ========================= */
+
+        .brand-panel {
+            width: 42%;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            padding: 50px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #1d4ed8,
+                    #2563eb,
+                    #3b82f6
+                );
+
+            color: white;
+        }
+
+        .brand-logo {
+            width: 95px;
+            height: 95px;
+
+            border-radius: 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(255, 255, 255, 0.15);
+
+            border: 1px solid rgba(255, 255, 255, 0.3);
+
+            margin-bottom: 25px;
+
+            font-size: 42px;
+        }
+
+        .brand-panel h1 {
+            margin: 0 0 12px;
+
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .brand-panel h2 {
+            margin: 0 0 20px;
+
+            font-size: 18px;
+            font-weight: 400;
+
+            opacity: 0.95;
+        }
+
+        .brand-panel p {
+            max-width: 320px;
+
+            margin: 0;
+
+            line-height: 1.7;
+            font-size: 14px;
+
+            opacity: 0.85;
+        }
+
+        /* =========================
+           RIGHT SIDE
+        ========================= */
+
+        .auth-panel {
+            width: 58%;
+
+            padding: 55px 70px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-header {
+            margin-bottom: 28px;
+        }
+
+        .auth-header h2 {
+            margin: 0 0 8px;
+
+            font-size: 30px;
+            color: #1f2937;
+        }
+
+        .auth-header p {
+            margin: 0;
+
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* =========================
+           SOCIAL LOGIN
+        ========================= */
+
+        .social-login {
+            display: flex;
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            flex: 1;
+
+            height: 46px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+
+            background: white;
+
+            color: #374151;
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            transition: all 0.2s ease;
+        }
+
+        .social-btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+
+            transform: translateY(-1px);
+        }
+
+        .google-icon {
+            color: #4285f4;
+        }
+
+        .github-icon {
+            color: #111827;
+        }
+
+        /* =========================
+           DIVIDER
+        ========================= */
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            margin: 25px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background: #e5e7eb;
+        }
+
+        .divider span {
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            color: #374151;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            height: 48px;
+
+            padding: 0 15px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            transition: 0.2s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        /* =========================
+           OPTIONS
+        ========================= */
+
+        .form-options {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 24px;
+
+            font-size: 13px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #6b7280;
+        }
+
+        .remember input {
+            width: 15px;
+            height: 15px;
+        }
+
+        .forgot-link {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .submit-btn {
+            width: 100%;
+
+            height: 50px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #2563eb;
+
+            color: white;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: all 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 18px rgba(37, 99, 235, 0.25);
+        }
+
+        /* =========================
+           REGISTER LINK
+        ========================= */
+
+        .switch-auth {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #6b7280;
+
+            font-size: 13px;
+        }
+
+        .switch-auth a {
+            color: #2563eb;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+        .switch-auth a:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .alert {
+            padding: 12px 15px;
+
+            margin-bottom: 20px;
+
+            border-radius: 8px;
+
+            background: #fee2e2;
+
+            color: #b91c1c;
+
+            font-size: 13px;
+        }
+
+        .alert p {
+            margin: 0;
+        }
+
+        /* =========================
+           REGISTER FORM
+        ========================= */
+
+        #register-section {
+            display: none;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .auth-wrapper {
+                max-width: 520px;
+            }
+
+            .brand-panel {
+                display: none;
+            }
+
+            .auth-panel {
+                width: 100%;
+
+                padding: 45px 35px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .auth-wrapper {
+                border-radius: 18px;
+            }
+
+            .auth-panel {
+                padding: 35px 22px;
+            }
+
+            .auth-header h2 {
+                font-size: 26px;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="auth-wrapper">
+
+    <!-- =========================
+         LEFT BRANDING
+    ========================= -->
+
+    <div class="brand-panel">
+
+        <div class="brand-logo">
+            <i class="fa-solid fa-globe"></i>
+        </div>
+
+        <h1>PSUSphere</h1>
+
+        <h2>Student Organization Portal</h2>
+
+        <p>
+            Connect with student organizations,
+            discover opportunities, and stay
+            connected with the PSUSphere community.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         RIGHT AUTH PANEL
+    ========================= -->
+
+    <div class="auth-panel">
+
+
+        <!-- =====================
+             LOGIN
+        ====================== -->
+
+        <div id="login-section">
+
+            <div class="auth-header">
+
+                <h2>Welcome back!</h2>
+
+                <p>
+                    Sign in to your PSUSphere account
+                </p>
+
+            </div>
+
+
+            <!-- Social Login -->
+
+            <div class="social-login">
+
+                <a href="{% provider_login_url 'google' %}"
+                   class="social-btn">
+
+                    <i class="fab fa-google google-icon"></i>
+
+                    Continue with Google
+
+                </a>
+
+                <a href="{% provider_login_url 'github' %}"
+                   class="social-btn">
+
+                    <i class="fab fa-github github-icon"></i>
+
+                    GitHub
+
+                </a>
+
+            </div>
+
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+
+            <!-- Login Form -->
+
+            <form method="post"
+                  action="{% url 'account_login' %}">
+
+                {% csrf_token %}
+
+
+                {% if form.non_field_errors %}
+
+                    <div class="alert">
+
+                        {% for error in form.non_field_errors %}
+
+                            <p>{{ error }}</p>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- Username / Email -->
+
+                <div class="form-group">
+
+                    <label for="id_login">
+                        Email or Username
+                    </label>
+
+                    <input type="text"
+                           name="login"
+                           id="id_login"
+                           placeholder="Enter your email or username"
+                           required>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <label for="id_password">
+                        Password
+                    </label>
+
+                    <input type="password"
+                           name="password"
+                           id="id_password"
+                           placeholder="Enter your password"
+                           required>
+
+                </div>
+
+
+                <!-- Options -->
+
+                <div class="form-options">
+
+                    <label class="remember">
+
+                        <input type="checkbox"
+                               name="remember"
+                               id="loginCheck"
+                               checked>
+
+                        Remember me
+
+                    </label>
+
+
+                    <a href="{% url 'account_reset_password' %}"
+                       class="forgot-link">
+
+                        Forgot password?
+
+                    </a>
+
+                </div>
+
+
+                <!-- Login Button -->
+
+                <button type="submit"
+                        class="submit-btn">
+
+                    SIGN IN
+
+                </button>
+
+            </form>
+
+
+            <!-- Register -->
+
+            <div class="switch-auth">
+
+                Don't have an account?
+
+                <a href="#"
+                   onclick="showRegister(); return false;">
+
+                    Create an account
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             REGISTER
+        ====================== -->
+
+        <div id="register-section">
+
+            <div class="auth-header">
+
+                <h2>Create account</h2>
+
+                <p>
+                    Join the PSUSphere community
+                </p>
+
+            </div>
+
+
+            <!-- Social Register -->
+
+            <div class="social-login">
+
+                <a href="{% provider_login_url 'google' %}"
+                   class="social-btn">
+
+                    <i class="fab fa-google google-icon"></i>
+
+                    Continue with Google
+
+                </a>
+
+                <a href="{% provider_login_url 'github' %}"
+                    class="social-btn">
+
+                  <i class="fab fa-github github-icon"></i>
+                      GitHub
+
+                </a>
+
+            </div>
+
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+
+            <!-- Register Form -->
+
+            <form method="post"
+                  action="{% url 'account_signup' %}">
+
+                {% csrf_token %}
+
+
+                <!-- Username -->
+
+                <div class="form-group">
+
+                    <label for="registerUsername">
+                        Username
+                    </label>
+
+                    <input type="text"
+                           name="username"
+                           id="registerUsername"
+                           placeholder="Choose a username"
+                           required>
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label for="registerEmail">
+                        Email
+                    </label>
+
+                    <input type="email"
+                           name="email"
+                           id="registerEmail"
+                           placeholder="Enter your email"
+                           required>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <label for="registerPassword">
+                        Password
+                    </label>
+
+                    <input type="password"
+                           name="password1"
+                           id="registerPassword"
+                           placeholder="Create a password"
+                           required>
+
+                </div>
+
+
+                <!-- Confirm Password -->
+
+                <div class="form-group">
+
+                    <label for="registerRepeatPassword">
+                        Confirm password
+                    </label>
+
+                    <input type="password"
+                           name="password2"
+                           id="registerRepeatPassword"
+                           placeholder="Repeat your password"
+                           required>
+
+                </div>
+
+
+                <!-- Register Button -->
+
+                <button type="submit"
+                        class="submit-btn">
+
+                    CREATE ACCOUNT
+
+                </button>
+
+            </form>
+
+
+            <!-- Back to Login -->
+
+            <div class="switch-auth">
+
+                Already have an account?
+
+                <a href="#"
+                   onclick="showLogin(); return false;">
+
+                    Sign in
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    function showRegister() {
+
+        document.getElementById("login-section").style.display = "none";
+
+        document.getElementById("register-section").style.display = "block";
+
+    }
+
+
+    function showLogin() {
+
+        document.getElementById("register-section").style.display = "none";
+
+        document.getElementById("login-section").style.display = "block";
+
+    }
+
+</script>
+
+</body>
+</html>

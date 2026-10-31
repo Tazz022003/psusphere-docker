@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <div class="card-title">Delete College</div>
+                        <div class="card-category">Page Subtitle</div>
+                    </div>
+
+                    <div class="card-body">
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <p>
+                                Are you sure you want to delete
+                                "<strong>{{ object }}</strong>"?
+                            </p>
+
+                            <button type="submit"
+                                    class="btn btn-danger btn-rounded">
+                                Delete
+                            </button>
+
+                            <a href="{% url 'college-list' %}"
+                               class="btn btn-secondary btn-rounded">
+                                Cancel
+                            </a>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

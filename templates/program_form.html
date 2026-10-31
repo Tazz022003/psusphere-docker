@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <div class="card-title">
+                            {% if object %}
+                                Update Program
+                            {% else %}
+                                Add New Program
+                            {% endif %}
+                        </div>
+
+                        <div class="card-category">
+                            Page Subtitle
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <div class="form-group">
+                                <label for="{{ form.prog_name.id_for_label }}">
+                                    Program Name:
+                                </label>
+
+                                {{ form.prog_name }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.college.id_for_label }}">
+                                    College:
+                                </label>
+
+                                {{ form.college }}
+                            </div>
+
+                            <div class="form-group">
+
+                                <button type="submit"
+                                        class="btn btn-primary btn-rounded">
+                                    Save
+                                </button>
+
+                                <a href="{% url 'program-list' %}"
+                                   class="btn btn-secondary btn-rounded">
+                                    Cancel
+                                </a>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
