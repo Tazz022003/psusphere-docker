@@ -10,9 +10,8 @@ A Django project (PSUSphere) containerized with Docker. Anyone can run it with a
 
 Check that Docker is installed:
 
-```
 docker --version
-```
+
 
 ## Option 1: Run from Docker Hub (for clients)
 
@@ -21,37 +20,34 @@ Image: `charsgerand/psusphere:latest`
 1. Download or copy the `for_client/docker-compose.yml` file into an empty folder.
 2. Open a terminal in that folder and run:
 
-```
+
 docker compose up -d
-```
+
 
 3. Open **http://localhost:8000** in your browser.
-4. Create an admin account:
+4. Create an account:
 
-```
+
 docker compose exec web python manage.py createsuperuser
-```
+
 
 5. Stop the app:
 
-```
+
 docker compose down
-```
+
 
 ## Option 2: Build from source (for developers)
 
 1. Clone this repository:
 
-```
+
 git clone https://github.com/Tazz022003/psusphere-docker.git
 cd psusphere-docker
-```
 
 2. Build and run:
 
-```
 docker compose up --build
-```
 
 3. Open **http://localhost:8000**.
 
